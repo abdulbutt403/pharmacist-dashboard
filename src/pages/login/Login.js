@@ -8,6 +8,8 @@ import {
   Tab,
   TextField,
   Fade,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 import classnames from "classnames";
@@ -35,12 +37,13 @@ function Login(props) {
   var [nameValue, setNameValue] = useState("");
   var [loginValue, setLoginValue] = useState("admin@flatlogic.com");
   var [passwordValue, setPasswordValue] = useState("password");
+  var [role, setRole] = useState(10);
 
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
         <img src={logo} alt="logo" className={classes.logotypeImage} />
-        <Typography className={classes.logotypeText}>Material Admin</Typography>
+        <Typography className={classes.logotypeText}>PHARMACIST APP</Typography>
       </div>
       <div className={classes.formContainer}>
         <div className={classes.form}>
@@ -59,20 +62,18 @@ function Login(props) {
               <Typography variant="h1" className={classes.greeting}>
                 Good Morning, User
               </Typography>
-              <Button size="large" className={classes.googleButton}>
-                <img src={google} alt="google" className={classes.googleIcon} />
-                &nbsp;Sign in with Google
-              </Button>
-              <div className={classes.formDividerContainer}>
-                <div className={classes.formDivider} />
-                <Typography className={classes.formDividerWord}>or</Typography>
-                <div className={classes.formDivider} />
-              </div>
-              <Fade in={error}>
-                <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
-                </Typography>
-              </Fade>
+              <Select
+                style={{width: '100%', marginTop: 30}}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <MenuItem value={10}>PATIENT</MenuItem>
+                <MenuItem value={20}>PHARMACIST</MenuItem>
+                <MenuItem value={30}>LAB</MenuItem>
+              </Select>
+
               <TextField
                 id="email"
                 InputProps={{
@@ -82,7 +83,7 @@ function Login(props) {
                   },
                 }}
                 value={loginValue}
-                onChange={e => setLoginValue(e.target.value)}
+                onChange={(e) => setLoginValue(e.target.value)}
                 margin="normal"
                 placeholder="Email Adress"
                 type="email"
@@ -97,7 +98,7 @@ function Login(props) {
                   },
                 }}
                 value={passwordValue}
-                onChange={e => setPasswordValue(e.target.value)}
+                onChange={(e) => setPasswordValue(e.target.value)}
                 margin="normal"
                 placeholder="Password"
                 type="password"
@@ -111,11 +112,13 @@ function Login(props) {
                     disabled={
                       loginValue.length === 0 || passwordValue.length === 0
                     }
+                    style={{ width: "100%" }}
                     onClick={() =>
                       loginUser(
                         userDispatch,
                         loginValue,
                         passwordValue,
+                        role,
                         props.history,
                         setIsLoading,
                         setError,
@@ -125,16 +128,9 @@ function Login(props) {
                     color="primary"
                     size="large"
                   >
-                    Login
+                    LOGIN
                   </Button>
                 )}
-                <Button
-                  color="primary"
-                  size="large"
-                  className={classes.forgetButton}
-                >
-                  Forget Password
-                </Button>
               </div>
             </React.Fragment>
           )}
@@ -160,7 +156,7 @@ function Login(props) {
                   },
                 }}
                 value={nameValue}
-                onChange={e => setNameValue(e.target.value)}
+                onChange={(e) => setNameValue(e.target.value)}
                 margin="normal"
                 placeholder="Full Name"
                 type="text"
@@ -175,7 +171,7 @@ function Login(props) {
                   },
                 }}
                 value={loginValue}
-                onChange={e => setLoginValue(e.target.value)}
+                onChange={(e) => setLoginValue(e.target.value)}
                 margin="normal"
                 placeholder="Email Adress"
                 type="email"
@@ -190,7 +186,7 @@ function Login(props) {
                   },
                 }}
                 value={passwordValue}
-                onChange={e => setPasswordValue(e.target.value)}
+                onChange={(e) => setPasswordValue(e.target.value)}
                 margin="normal"
                 placeholder="Password"
                 type="password"
@@ -226,27 +222,9 @@ function Login(props) {
                   </Button>
                 )}
               </div>
-              <div className={classes.formDividerContainer}>
-                <div className={classes.formDivider} />
-                <Typography className={classes.formDividerWord}>or</Typography>
-                <div className={classes.formDivider} />
-              </div>
-              <Button
-                size="large"
-                className={classnames(
-                  classes.googleButton,
-                  classes.googleButtonCreating,
-                )}
-              >
-                <img src={google} alt="google" className={classes.googleIcon} />
-                &nbsp;Sign in with Google
-              </Button>
             </React.Fragment>
           )}
         </div>
-        <Typography color="primary" className={classes.copyright}>
-        © 2014-{new Date().getFullYear()} <a style={{ textDecoration: 'none', color: 'inherit' }} href="https://flatlogic.com" rel="noopener noreferrer" target="_blank">Flatlogic</a>, LLC. All rights reserved.
-        </Typography>
       </div>
     </Grid>
   );

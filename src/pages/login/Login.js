@@ -12,7 +12,7 @@ import {
   MenuItem,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import classnames from "classnames";
+import { ToastContainer, toast } from "react-toastify";
 
 // styles
 import useStyles from "./styles";
@@ -22,7 +22,11 @@ import logo from "./logo.svg";
 import google from "../../images/google.svg";
 
 // context
-import { useUserDispatch, loginUser } from "../../context/UserContext";
+import {
+  useUserDispatch,
+  loginUser,
+  createUser,
+} from "../../context/UserContext";
 
 function Login(props) {
   var classes = useStyles();
@@ -34,16 +38,16 @@ function Login(props) {
   var [isLoading, setIsLoading] = useState(false);
   var [error, setError] = useState(null);
   var [activeTabId, setActiveTabId] = useState(0);
-  var [nameValue, setNameValue] = useState("");
-  var [loginValue, setLoginValue] = useState("admin@flatlogic.com");
+  var [nameValue, setNameValue] = useState("Random Name");
+  var [loginValue, setLoginValue] = useState("admin@pharmacist.com");
   var [passwordValue, setPasswordValue] = useState("password");
-  var [role, setRole] = useState(10);
+  var [role, setRole] = useState("PATIENT");
 
   return (
     <Grid container className={classes.container}>
       <div className={classes.logotypeContainer}>
         <img src={logo} alt="logo" className={classes.logotypeImage} />
-        <Typography className={classes.logotypeText}>PHARMACIST APP</Typography>
+        <Typography className={classes.logotypeText}>{role} APP</Typography>
       </div>
       <div className={classes.formContainer}>
         <div className={classes.form}>
@@ -63,15 +67,15 @@ function Login(props) {
                 Good Morning, User
               </Typography>
               <Select
-                style={{width: '100%', marginTop: 30}}
+                style={{ width: "100%", marginTop: 30 }}
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
-                <MenuItem value={10}>PATIENT</MenuItem>
-                <MenuItem value={20}>PHARMACIST</MenuItem>
-                <MenuItem value={30}>LAB</MenuItem>
+                <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
+                <MenuItem value={"PHARMACIST"}>PHARMACIST</MenuItem>
+                <MenuItem value={"LAB"}>LAB</MenuItem>
               </Select>
 
               <TextField
@@ -147,8 +151,20 @@ function Login(props) {
                   Something is wrong with your login or password :(
                 </Typography>
               </Fade>
+              <Select
+                style={{ width: "100%", marginTop: 30 }}
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
+                <MenuItem value={"PHARMACIST"}>PHARMACIST</MenuItem>
+                <MenuItem value={"LAB"}>LAB</MenuItem>
+              </Select>
+
               <TextField
-                id="name"
+                id="fullName"
                 InputProps={{
                   classes: {
                     underline: classes.textFieldUnderline,
@@ -159,9 +175,10 @@ function Login(props) {
                 onChange={(e) => setNameValue(e.target.value)}
                 margin="normal"
                 placeholder="Full Name"
-                type="text"
+                type="Text"
                 fullWidth
               />
+
               <TextField
                 id="email"
                 InputProps={{
@@ -198,10 +215,12 @@ function Login(props) {
                 ) : (
                   <Button
                     onClick={() =>
-                      loginUser(
+                      createUser(
                         userDispatch,
                         loginValue,
                         passwordValue,
+                        nameValue,
+                        role,
                         props.history,
                         setIsLoading,
                         setError,
@@ -222,6 +241,17 @@ function Login(props) {
                   </Button>
                 )}
               </div>
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+              />
             </React.Fragment>
           )}
         </div>

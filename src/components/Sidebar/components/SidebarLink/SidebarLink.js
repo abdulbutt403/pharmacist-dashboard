@@ -101,6 +101,7 @@ export default function SidebarLink({
           className={classnames(classes.linkIcon, {
             [classes.linkIconActive]: isLinkActive,
           })}
+          style={{marginRight: -3}}
         >
           {nested ? <Dot color={isLinkActive && "primary"} /> : icon}
         </ListItemIcon>

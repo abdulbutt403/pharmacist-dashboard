@@ -1,4 +1,7 @@
+import axios from "axios";
 import React from "react";
+import { endPoint } from "../contants";
+import { ToastContainer, toast } from "react-toastify";
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
@@ -45,23 +48,92 @@ function useUserDispatch() {
   return context;
 }
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
+export {
+  UserProvider,
+  useUserState,
+  useUserDispatch,
+  loginUser,
+  signOut,
+  createUser,
+};
 
 // ###########################################################
 
-function loginUser(dispatch, login, password, role, history, setIsLoading, setError) {
+async function loginUser(
+  dispatch,
+  login,
+  password,
+  role,
+  history,
+  setIsLoading,
+  setError,
+) {
   setError(false);
   setIsLoading(true);
 
   if (!!login && !!password && !!role) {
-    console.log(role)
-    setTimeout(() => {
-    //   localStorage.setItem('id_token', 1)
-    //   setError(null)
-      setIsLoading(false)
-    //   dispatch({ type: 'LOGIN_SUCCESS' })
+    const res = await axios.post(endPoint + "/users/login", {
+      email: login,
+      password: password,
+      role: role,
+    });
+    console.log({res})
 
-    //   history.push('/app/dashboard')
+    if(res.data.token){
+      setTimeout(() => {
+        localStorage.setItem('id_token', res.data.token)
+        setError(null)
+        setIsLoading(false);
+        dispatch({ type: 'LOGIN_SUCCESS' })
+         history.push('/app/dashboard')
+      }, 2000);
+    }
+
+  } else {
+    dispatch({ type: "LOGIN_FAILURE" });
+    setError(true);
+    setIsLoading(false);
+  }
+}
+
+async function createUser(
+  dispatch,
+  login,
+  password,
+  fullName,
+  role,
+  history,
+  setIsLoading,
+  setError,
+) {
+  setIsLoading(true);
+
+  if (!!login && !!password && !!role) {
+    try {
+      const res = await axios.post(endPoint + "/users/create", {
+        email: login,
+        password: password,
+        role: role,
+        fullName: fullName,
+      });
+      if(res.data.success){
+        toast.success(`Successfully Registered ${role}`)
+      }
+      if(res.data.msg.length){
+        toast.warning(`${role} already exist`)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    console.log(role);
+    setTimeout(() => {
+      //   localStorage.setItem('id_token', 1)
+      //   setError(null)
+      setIsLoading(false);
+      //   dispatch({ type: 'LOGIN_SUCCESS' })
+
+      //   history.push('/app/dashboard')
     }, 2000);
   } else {
     dispatch({ type: "LOGIN_FAILURE" });

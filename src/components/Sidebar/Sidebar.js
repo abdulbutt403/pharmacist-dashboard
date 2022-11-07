@@ -10,6 +10,8 @@ import {
   LibraryBooks as LibraryIcon,
   HelpOutline as FAQIcon,
   ArrowBack as ArrowBackIcon,
+  CardGiftcard as CartIcon,
+  NotesSharp as NotesIcon
 } from "@material-ui/icons";
 import { useTheme } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
@@ -30,56 +32,38 @@ import {
 } from "../../context/LayoutContext";
 
 const structure = [
-  { id: 0, label: "Dashboard", link: "/app/dashboard", icon: <HomeIcon /> },
+  { id: 0, label: "DASHBOARD", link: "/app/dashboard", icon: <HomeIcon /> },
   {
     id: 1,
-    label: "Typography",
-    link: "/app/typography",
-    icon: <TypographyIcon />,
+    label: "PENDING ORDERS",
+    link: "/app/pending",
+    icon: <NotesIcon />,
   },
-  { id: 2, label: "Tables", link: "/app/tables", icon: <TableIcon /> },
+  { id: 2, label: "REPORTS", link: "/app/reports", icon: <TableIcon /> },
   {
     id: 3,
-    label: "Notifications",
-    link: "/app/notifications",
+    label: "ORDER HISTORY",
+    link: "/app/history",
     icon: <NotificationsIcon />,
   },
   {
     id: 4,
-    label: "UI Elements",
-    link: "/app/ui",
+    label: "PHARMACIES",
+    link: "/app/pharmacies",
     icon: <UIElementsIcon />,
-    children: [
-      { label: "Icons", link: "/app/ui/icons" },
-      { label: "Charts", link: "/app/ui/charts" },
-      { label: "Maps", link: "/app/ui/maps" },
-    ],
   },
-  { id: 5, type: "divider" },
-  { id: 6, type: "title", label: "HELP" },
-  { id: 7, label: "Library", link: "https://flatlogic.com/templates", icon: <LibraryIcon /> },
-  { id: 8, label: "Support", link: "https://flatlogic.com/forum", icon: <SupportIcon /> },
-  { id: 9, label: "FAQ", link: "https://flatlogic.com/forum", icon: <FAQIcon /> },
-  { id: 10, type: "divider" },
-  { id: 11, type: "title", label: "PROJECTS" },
+
+
   {
-    id: 12,
-    label: "My recent",
-    link: "",
-    icon: <Dot size="small" color="warning" />,
+    id: 5,
+    label: "CART",
+    link: "/app/cart",
+    icon: <CartIcon />,
   },
-  {
-    id: 13,
-    label: "Starred",
-    link: "",
-    icon: <Dot size="small" color="primary" />,
-  },
-  {
-    id: 14,
-    label: "Background",
-    link: "",
-    icon: <Dot size="small" color="secondary" />,
-  },
+
+
+
+  { id: 6, type: "divider" },
 ];
 
 function Sidebar({ location }) {
@@ -126,7 +110,7 @@ function Sidebar({ location }) {
           />
         </IconButton>
       </div>
-      <List className={classes.sidebarList}>
+      <List className={classes.sidebarList} style={{marginTop: '10%'}}>
         {structure.map(link => (
           <SidebarLink
             key={link.id}

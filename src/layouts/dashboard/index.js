@@ -9,11 +9,18 @@ import ComplexStatisticsCard from "examples/Cards/StatisticsCards/ComplexStatist
 import reportsBarChartData from "layouts/dashboard/data/reportsBarChartData";
 import reportsLineChartData from "layouts/dashboard/data/reportsLineChartData";
 import OrdersOverview from "layouts/dashboard/components/OrdersOverview";
+import { useSelector } from "react-redux";
+import {Navigate} from 'react-router-dom'
+
 
 function Dashboard() {
-  const { sales, tasks } = reportsLineChartData;
+  const { sales, tasks } = reportsLineChartData; 
+  const isAuth = useSelector((store) => store.root.user.authenticated);
 
-  return (
+  console.log(isAuth)
+  
+
+  return isAuth ? (
     <DashboardLayout>
       <DashboardNavbar />
       <MDBox py={3}>
@@ -128,6 +135,8 @@ function Dashboard() {
         </MDBox>
       </MDBox>
     </DashboardLayout>
+  ): (
+    <Navigate to="/authentication/sign-in" /> 
   );
 }
 

@@ -27,11 +27,16 @@ export const userSlice = createSlice({
       const data = action.payload;
       if(!(state.cart?.includes(data)))
       state.cart.push(data)
+    },
+    cartDelete: (state, action) => {
+      const Identifier = action.payload;
+      const index = state.cart.findIndex(item => item.Identifier === Identifier);
+      state.cart.splice(index,1)
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { signIn, signOut,setPharmacies ,cartAdd} = userSlice.actions
+export const { signIn, signOut,setPharmacies ,cartAdd,cartDelete} = userSlice.actions
 
 export default userSlice.reducer

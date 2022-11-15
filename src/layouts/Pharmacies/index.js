@@ -34,6 +34,8 @@ import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { setPharmacies } from "shared/reducers/UserSlice";
 import { cartAdd } from "shared/reducers/UserSlice";
+import { Navigate } from "react-router-dom";
+import MDBadge from "components/MDBadge";
 
 function Pharmacies() {
   const isMobile = useMediaQuery({ query: "(max-width: 786px)" });
@@ -43,6 +45,10 @@ function Pharmacies() {
   const [loading, setLoading] = useState(false);
   const [selectedId, setSelectedId] = useState("");
   const [selectedName, setSelectedName] = useState("");
+  const isAuth = useSelector((store) => store.root.user.authenticated);
+
+  console.log(isAuth)
+  
 
   const customStyles = {
     content: {
@@ -83,7 +89,9 @@ function Pharmacies() {
     console.log({ rowData, selectedId });
 
     let payload = {
+      Identifier: Date.now(),
       medicineId: rowData._id,
+      medicinePrice: rowData.Price,
       medicineAvailable: rowData.Quantity,
       medicineName: rowData.Title,
       pharmacyId: selectedId,
@@ -144,7 +152,7 @@ function Pharmacies() {
     setMedicine(true);
   };
 
-  return (
+  return isAuth ? (
     <React.Fragment>
       <Toaster position="top-center" reverseOrder={false} />
       <Modal
@@ -212,6 +220,12 @@ function Pharmacies() {
                         render: (rowData) => <span className="mt_dt">{rowData.email}</span>,
                       },
                       {
+                        title: "Active_Status",
+                        render: (rowData) => (
+                          <MDBadge badgeContent="online" color="success" variant="gradient" size="lg"/>
+                        ),
+                      },
+                      {
                         title: "Joined",
                         render: (rowData) => (
                           <span className="mt_dt">
@@ -223,6 +237,7 @@ function Pharmacies() {
                         title: "Located At",
                         render: (rowData) => <span className="mt_dt">{rowData.address}</span>,
                       },
+                      
                     ]}
                     actions={[
                       {
@@ -235,12 +250,14 @@ function Pharmacies() {
                     options={{
                       actionsColumnIndex: -1,
                       headerStyle: {
-                        backgroundColor: "#1A73E8",
-                        color: "#FFF",
-                        fontSize: 15,
+                        backgroundColor: "transparent",
+                        color: "#7b809a",
+                        fontSize: '0.8rem',
+                        opacity: 0.7,
                         fontStyle: "normal",
-                        fontWeight: "normal",
-                      },
+                        fontWeight: 700,
+                        textTransform: 'uppercase'
+                      }
                     }}
                   />
                 </Card>
@@ -314,12 +331,14 @@ function Pharmacies() {
                       options={{
                         actionsColumnIndex: -1,
                         headerStyle: {
-                          backgroundColor: "#1A73E8",
-                          color: "#FFF",
-                          fontSize: 15,
+                          backgroundColor: "transparent",
+                          color: "#7b809a",
+                          fontSize: '0.8rem',
+                          opacity: 0.7,
                           fontStyle: "normal",
-                          fontWeight: "normal",
-                        },
+                          fontWeight: 700,
+                          textTransform: 'uppercase'
+                        }
                       }}
                     />
                   </MDBox>
@@ -330,6 +349,8 @@ function Pharmacies() {
         </MDBox>
       </DashboardLayout>
     </React.Fragment>
+  ) : (
+    <Navigate to="/authentication/sign-in" /> 
   );
 }
 

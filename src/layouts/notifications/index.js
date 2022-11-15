@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 // @mui material components
 import Grid from "@mui/material/Grid";
@@ -31,6 +31,8 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { cartDelete } from "shared/reducers/UserSlice";
 
 function Notifications() {
   const [successSB, setSuccessSB] = useState(false);
@@ -50,7 +52,13 @@ function Notifications() {
   const alertContent = (name) => (
     <MDTypography variant="body2" color="white">
       A simple {name} alert with{" "}
-      <MDTypography component="a" href="#" variant="body2" fontWeight="medium" color="white">
+      <MDTypography
+        component="a"
+        href="#"
+        variant="body2"
+        fontWeight="medium"
+        color="white"
+      >
         an example link
       </MDTypography>
       . Give it a click if you like.
@@ -113,40 +121,80 @@ function Notifications() {
 
   const pharmacies = useSelector((store) => store.root.user.pharmacies);
   const cart = useSelector((store) => store.root.user.cart);
+  const dispatch = useDispatch();
 
   console.log({ cart });
 
-  return pharmacies.length > 0 ? (
+  return pharmacies.length > 0 && cart.length > 0 ? (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox mt={6} mb={3} style={{ display: "flex" }}>
+      <MDBox mt={6} mb={3} style={{ display: "flex", flexWrap: "wrap" }}>
         {pharmacies.map((element, index) => (
-          <Grid container spacing={1} justifyContent="center" key={index}>
-            <Grid item xs={12} lg={10}>
-              <Card style={{ minHeight: 500 }}>
-                <button className="button-3" role="button">
-                  Place Order
-                </button>
-                <MDBox p={2}>
-                  <MDTypography variant="h5">{element.name}</MDTypography>
-                </MDBox>
-                {cart
-                  .filter((e) => e.pharmacyId === element.id)
-                  .map((x, i) => (
-                    <MDBox pt={2} px={2}>
-                      <MDAlert color="primary">{`${x.medicineName} (${x.purchaseQuantity})`}</MDAlert>
+          <React.Fragment key={index}>
+            {cart.filter((e) => e.pharmacyId === element.id).length ? (
+              <Grid
+                container
+                spacing={1}
+                justifyContent="center"
+                style={{ flexBasis: "50%", marginBottom: 50 }}
+              >
+                <Grid item xs={12} lg={10}>
+                  <Card style={{ minHeight: 500 }}>
+                    <button className="button-3" role="button">
+                      Place Order
+                    </button>
+                    <MDBox p={2}>
+                      <MDTypography variant="h5">{element.name}</MDTypography>
                     </MDBox>
-                  ))}
-              </Card>
-            </Grid>
-          </Grid>
+                    {cart
+                      .filter((e) => e.pharmacyId === element.id)
+                      .map((x, i) => (
+                        <MDBox pt={2} px={2} key={i}>
+                          <MDAlert
+                            color="success"
+                            style={{ fontSize: 17, fontWeight: 400 }}
+                          >
+                            {`${x.medicineName} (${
+                              x.purchaseQuantity
+                            }) | Total : ${
+                              x.purchaseQuantity * x.medicinePrice
+                            } RS`}
+                            <i
+                              className="fa fa-times"
+                              style={{
+                                position: "absolute",
+                                right: 20,
+                                cursor: "pointer",
+                              }}
+                              onClick={() => dispatch(cartDelete(x.Identifier))}
+                            />
+                          </MDAlert>
+                        </MDBox>
+                      ))}
+                  </Card>
+                </Grid>
+              </Grid>
+            ): <></>}
+          </React.Fragment>
         ))}
       </MDBox>
     </DashboardLayout>
   ) : (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox mt={6} mb={3} style={{ display: "flex", alignItems:'center', justifyContent: 'center', minHeight: 500, textTransform: 'uppercase', color: 'red', fontSize: 30 }}>
+      <MDBox
+        mt={6}
+        mb={3}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: 500,
+          textTransform: "uppercase",
+          color: "red",
+          fontSize: 30,
+        }}
+      >
         Your cart is Empty !
       </MDBox>
     </DashboardLayout>

@@ -30,6 +30,8 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 import { endPoint } from "contants";
 import { MenuItem, Select } from "@mui/material";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import {signIn} from 'shared/reducers/UserSlice'
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -37,6 +39,7 @@ function Basic() {
   var [password, setPassword] = useState("password");
   var [role, setRole] = useState("PATIENT");
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const dispatch = useDispatch();
 
   async function loginUser(login, password, role) {
     if (!!login && !!password && !!role) {
@@ -48,6 +51,7 @@ function Basic() {
       console.log(res);
 
       if (res.data.token) {
+        dispatch(signIn())
         setTimeout(() => {
           localStorage.setItem("token", res.data.token);
           window.location.href="/dashboard"

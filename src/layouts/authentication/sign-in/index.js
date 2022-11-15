@@ -107,8 +107,6 @@ function Basic() {
               onChange={(e) => setRole(e.target.value)}
             >
               <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
-              <MenuItem value={"PHARMACIST"}>PHARMACIST</MenuItem>
-              <MenuItem value={"LAB"}>LAB</MenuItem>
             </Select>
             <MDBox mb={2}>
               <MDInput

@@ -68,9 +68,9 @@ const routes = [
   {
     type: "collapse",
     name: "Pharmacies",
-    key: "billing",
+    key: "pharmacies",
     icon: <Icon fontSize="small">receipt_long</Icon>,
-    route: "/billing",
+    route: "/pharmacies",
     component: <Pharmacies />,
   },
   {
@@ -84,7 +84,7 @@ const routes = [
   {
     type: "collapse",
     name: "Cart",
-    key: "notifications",
+    key: "cart",
     icon: <Icon fontSize="small">Cart</Icon>,
     route: "/cart",
     component: <Notifications />,

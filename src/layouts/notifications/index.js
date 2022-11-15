@@ -30,6 +30,7 @@ import MDSnackbar from "components/MDSnackbar";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
+import { useSelector } from "react-redux";
 
 function Notifications() {
   const [successSB, setSuccessSB] = useState(false);
@@ -110,25 +111,43 @@ function Notifications() {
     />
   );
 
-  return (
+  const pharmacies = useSelector((store) => store.root.user.pharmacies);
+  const cart = useSelector((store) => store.root.user.cart);
+
+  console.log({ cart });
+
+  return pharmacies.length > 0 ? (
     <DashboardLayout>
       <DashboardNavbar />
-      <MDBox mt={6} mb={3}>
-        <Grid container spacing={3} justifyContent="center">
-          <Grid item xs={12} lg={8}>
-            <Card style={{minHeight: 500}}>
-            <button class="button-3" role="button">Place Order</button>
-              <MDBox p={2}>
-                <MDTypography variant="h5">Items</MDTypography>
-              </MDBox>
-              <MDBox pt={2} px={2}>
-                <MDAlert color="primary">
-                  Panadol (2)
-                </MDAlert>
-              </MDBox>
-            </Card>
+      <MDBox mt={6} mb={3} style={{ display: "flex" }}>
+        {pharmacies.map((element, index) => (
+          <Grid container spacing={1} justifyContent="center" key={index}>
+            <Grid item xs={12} lg={10}>
+              <Card style={{ minHeight: 500 }}>
+                <button className="button-3" role="button">
+                  Place Order
+                </button>
+                <MDBox p={2}>
+                  <MDTypography variant="h5">{element.name}</MDTypography>
+                </MDBox>
+                {cart
+                  .filter((e) => e.pharmacyId === element.id)
+                  .map((x, i) => (
+                    <MDBox pt={2} px={2}>
+                      <MDAlert color="primary">{`${x.medicineName} (${x.purchaseQuantity})`}</MDAlert>
+                    </MDBox>
+                  ))}
+              </Card>
+            </Grid>
           </Grid>
-        </Grid>
+        ))}
+      </MDBox>
+    </DashboardLayout>
+  ) : (
+    <DashboardLayout>
+      <DashboardNavbar />
+      <MDBox mt={6} mb={3} style={{ display: "flex", alignItems:'center', justifyContent: 'center', minHeight: 500, textTransform: 'uppercase', color: 'red', fontSize: 30 }}>
+        Your cart is Empty !
       </MDBox>
     </DashboardLayout>
   );

@@ -32,11 +32,16 @@ export const userSlice = createSlice({
       const Identifier = action.payload;
       const index = state.cart.findIndex(item => item.Identifier === Identifier);
       state.cart.splice(index,1)
+    },
+    pharmDelete: (state, action) => {
+      const Identifier = action.payload;
+      const index = state.pharmacies.findIndex(item => item.id === Identifier);
+      state.pharmacies.splice(index,1)
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { signIn, signOut,setPharmacies ,cartAdd,cartDelete} = userSlice.actions
+export const { signIn, signOut,setPharmacies ,cartAdd,cartDelete,pharmDelete} = userSlice.actions
 
 export default userSlice.reducer

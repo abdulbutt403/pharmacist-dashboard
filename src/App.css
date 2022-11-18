@@ -57,8 +57,31 @@
 }
 
 .mt_dt{
-  font-size: 14px;
+  margin: 0;
+  font-family: "Roboto","Helvetica","Arial",sans-serif;
+  font-size: 0.75rem;
+  line-height: 15px;
+  letter-spacing: 0.03333em;
+  opacity: 1;
+  text-transform: none;
+  vertical-align: unset;
+  /* text-decoration: none; */
+  color: #7b809a;
+  font-weight: 600;
+}
 
+.MuiTable-root td{
+  margin: 0;
+  font-family: "Roboto","Helvetica","Arial",sans-serif !important;
+  font-size: 0.75rem !important;
+  line-height: 15px !important;
+  letter-spacing: 0.03333em;
+  opacity: 1;
+  text-transform: none;
+  vertical-align: unset;
+  /* text-decoration: none; */
+  color: #7b809a !important;
+  font-weight: 600 !important;
 }
 
 

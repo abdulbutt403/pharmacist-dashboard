@@ -34,7 +34,7 @@ import { Button } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { setPharmacies } from "shared/reducers/UserSlice";
 import { cartAdd } from "shared/reducers/UserSlice";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import MDBadge from "components/MDBadge";
 
 function Pharmacies() {
@@ -211,14 +211,8 @@ function Pharmacies() {
                     icons={tableIcons}
                     title=""
                     columns={[
-                      {
-                        title: "Name",
-                        render: (rowData) => <span className="mt_dt">{rowData.fullName}</span>,
-                      },
-                      {
-                        title: "Mail Address",
-                        render: (rowData) => <span className="mt_dt">{rowData.email}</span>,
-                      },
+                      { title: 'Name', field: 'fullName' },
+                      { title: 'Mail Address', field: 'email' },
                       {
                         title: "Active_Status",
                         render: (rowData) => (
@@ -235,7 +229,7 @@ function Pharmacies() {
                       },
                       {
                         title: "Located At",
-                        render: (rowData) => <span className="mt_dt">{rowData.address}</span>,
+                        field: 'address',
                       },
                       
                     ]}
@@ -305,19 +299,19 @@ function Pharmacies() {
                       columns={[
                         {
                           title: "Identifier",
-                          render: (rowData) => <span className="mt_dt">{rowData._id}</span>,
+                          field: "_id",
                         },
                         {
                           title: "Name",
-                          render: (rowData) => <span className="mt_dt">{rowData.Title}</span>,
+                          field: "Title"
                         },
                         {
                           title: "Stock",
-                          render: (rowData) => <span className="mt_dt">{rowData.Quantity}</span>,
+                          field: "Quantity",
                         },
                         {
                           title: "Price (Per Tablet)",
-                          render: (rowData) => <span className="mt_dt">{rowData.Price}</span>,
+                          field: "Price"
                         },
                       ]}
                       actions={[

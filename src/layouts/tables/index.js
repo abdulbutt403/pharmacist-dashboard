@@ -27,6 +27,11 @@ import authorsTableData from "layouts/tables/data/authorsTableData";
 import projectsTableData from "layouts/tables/data/projectsTableData";
 import axios from "axios";
 import { endPoint } from "contants";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import moment from "moment";
+import MaterialTable from "material-table";
+import MDBadge from "components/MDBadge";
 
 function Tables() {
   const { columns, rows } = authorsTableData();
@@ -34,6 +39,10 @@ function Tables() {
   const [data, setData] = useState([]);
   const [stocks, setStocks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [medicine, setMedicine] = useState(false);
+  const isAuth = useSelector((store) => store.root.user.authenticated);
+  const [selectedId, setSelectedId] = useState("");
+  const [selectedName, setSelectedName] = useState("");
 
   const tableIcons = {
     Add: forwardRef((props, ref) => (
@@ -78,48 +87,197 @@ function Tables() {
       const posts = await axios.post(endPoint + "/users/orderByPatient", {
         patientEmail: decoded.email,
       });
-      console.log(posts);
-      setData(posts.data.result);
-      console.log(posts.data.result);
+      console.log({ posts });
+      setData(posts.data.orders);
       setLoading(false);
     }
   };
 
-  return (
-    <DashboardLayout>
-      <DashboardNavbar />
-      <MDBox pt={6} pb={3}>
-        <Grid container spacing={6}>
-          <Grid item xs={12}>
-            <Card>
-              <MDBox
-                mx={2}
-                mt={-3}
-                py={3}
-                px={2}
-                variant="gradient"
-                bgColor="info"
-                borderRadius="lg"
-                coloredShadow="info"
-              >
-                <MDTypography variant="h6" color="white">
-                  Orders Table
-                </MDTypography>
-              </MDBox>
-              <MDBox pt={3}>
-                <DataTable
-                  table={{ columns, rows }}
-                  isSorted={false}
-                  entriesPerPage={false}
-                  showTotalEntries={false}
-                  noEndBorder
-                />
-              </MDBox>
-            </Card>
+  const openPharmacy = (event, rowData) => {
+    setSelectedId(rowData._id);
+    setSelectedName(rowData.fullName);
+    let st = data.find((e) => e._id === rowData._id);
+    setStocks(st.Medicines);
+    setMedicine(true);
+  };
+
+  return isAuth ? (
+    <React.Fragment>
+      <DashboardLayout>
+        <DashboardNavbar />
+        <MDBox pt={6} pb={3}>
+          <Grid container spacing={6}>
+            {!medicine && (
+              <Grid item xs={12}>
+                <Card>
+                  <MDBox
+                    mx={0}
+                    mt={-3}
+                    py={3}
+                    px={2}
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
+                    variant="gradient"
+                    bgColor="info"
+                    borderRadius="lg"
+                    coloredShadow="info"
+                  >
+                    <MDTypography variant="h6" color="white">
+                      Orders
+                    </MDTypography>
+                  </MDBox>
+                  <MDBox pt={3}>
+                    <MaterialTable
+                      icons={tableIcons}
+                      title=""
+                      columns={[
+                        {
+                          title: "Pharmacy",
+                          field: "pharmacyName",
+                        },
+                        {
+                          title: "Ordered By",
+                          field: "patientEmail",
+                        },
+                        {
+                          title: "Status",
+                          render: (rowData) => (
+                            <MDBadge
+                              badgeContent={rowData.state}
+                              color="secondary"
+                              variant="gradient"
+                              size="lg"
+                            />
+                          ),
+                        },
+                        {
+                          title: "Ordered At",
+                          render: (rowData) => (
+                            <span className="mt_dt">
+                              {moment(rowData.createdAt).format(
+                                "dddd, MMMM Do YYYY",
+                              )}
+                            </span>
+                          ),
+                        },
+                        {
+                          title: "Medicines",
+                          render: (rowData) => (
+                            <span className="mt_dt">
+                              {rowData.Medicines.length} Medicines
+                            </span>
+                          ),
+                        },
+                      ]}
+                      actions={[
+                        {
+                          icon: () => <Search />,
+                          tooltip: "find medicine",
+                          onClick: (event, rowData) => openPharmacy(event, rowData),
+                        },
+                      ]}
+                      data={data}
+                      options={{
+                        actionsColumnIndex: -1,
+                        headerStyle: {
+                          backgroundColor: "transparent",
+                          color: "#7b809a",
+                          fontSize: "0.8rem",
+                          opacity: 0.7,
+                          fontStyle: "normal",
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                        },
+                      }}
+                    />
+                  </MDBox>
+                </Card>
+              </Grid>
+            )}
+
+{medicine && (
+              <Grid item xs={12}>
+                <Card>
+                  <MDBox
+                    mx={0}
+                    mt={-3}
+                    py={3}
+                    px={2}
+                    style={{ display: "flex", width: "100%", justifyContent: "space-between" }}
+                    variant="gradient"
+                    bgColor="info"
+                    borderRadius="lg"
+                    coloredShadow="info"
+                  >
+                    <MDTypography variant="h6" color="white">
+                      Medicines
+                    </MDTypography>
+                    <button
+                      style={{
+                        background: "transparent",
+                        cursor: "pointer",
+                        border: "none",
+                        outline: "none",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      onClick={() => setMedicine(false)}
+                    >
+                      <ChevronLeft style={{ color: "#fff", fontSize: 26 }} />
+                      <MDTypography variant="span" color="white">
+                        Back To Orders
+                      </MDTypography>
+                    </button>
+                  </MDBox>
+                  <MDBox pt={3}>
+                    <MaterialTable
+                      icons={tableIcons}
+                      title=""
+                      columns={[
+                        {
+                          title: "Identifier",
+                          field: "_id",
+                        },
+                        {
+                          title: "Name",
+                          field: "Title"
+                        },
+                        {
+                          title: "Stock",
+                          field: "Quantity",
+                        },
+                        {
+                          title: "Price (Per Tablet)",
+                          field: "Price"
+                        },
+                      ]}
+                      data={stocks}
+                      options={{
+                        actionsColumnIndex: -1,
+                        headerStyle: {
+                          backgroundColor: "transparent",
+                          color: "#7b809a",
+                          fontSize: '0.8rem',
+                          opacity: 0.7,
+                          fontStyle: "normal",
+                          fontWeight: 700,
+                          textTransform: 'uppercase'
+                        }
+                      }}
+                    />
+                  </MDBox>
+                </Card>
+              </Grid>
+            )}
           </Grid>
-        </Grid>
-      </MDBox>
-    </DashboardLayout>
+        </MDBox>
+      </DashboardLayout>
+    </React.Fragment>
+  ) : (
+    <Navigate to="/authentication/sign-in" />
   );
 }
 

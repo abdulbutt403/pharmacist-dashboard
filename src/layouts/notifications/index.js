@@ -148,6 +148,7 @@ function Notifications() {
         pharmacyId: data.pharmacy.id,
         pharmacyName: data.pharmacy.name,
         Medicines: medicines,
+        Identifier: Math.floor((Math.random() * 100) + 1) + Date.now()
       };
 
       console.log({ payload });

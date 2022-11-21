@@ -38,9 +38,11 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
+import Prescripted from "layouts/Prescripted";
 import Samples from "layouts/samples";
 import Billing from "layouts/billing";
 import Notifications from "layouts/notifications";
+import Reports from "layouts/Reports";
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
@@ -50,6 +52,7 @@ import Icon from "@mui/material/Icon";
 import Pharmacies from "layouts/Pharmacies";
 import Labs from "layouts/Labs";
 import EditProfile from "layouts/EditProfile";
+import AddForm from "layouts/AddForm";
 
 const routes = [
   {
@@ -67,6 +70,14 @@ const routes = [
     icon: <Icon fontSize="small">table_view</Icon>,
     route: "/tables",
     component: <Tables />,
+  },
+  {
+    type: "collapse",
+    name: "Prescripted Orders",
+    key: "prescripted",
+    icon: <Icon fontSize="small">receipt</Icon>,
+    route: "/prescripted",
+    component: <Prescripted />,
   },
   {
     type: "collapse",
@@ -95,10 +106,18 @@ const routes = [
   {
     type: "collapse",
     name: "Reports",
-    key: "notifications",
+    key: "searching",
     icon: <Icon fontSize="small">Reports</Icon>,
-    route: "/notifications",
-    component: <Notifications />,
+    route: "/searching",
+    component: <Reports />,
+  },
+  {
+    type: "collapse",
+    name: "Prescriptions",
+    key: "prescriptions",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/prescriptions",
+    component: <AddForm />,
   },
   {
     type: "collapse",

@@ -1,32 +1,12 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import React, { useState } from "react";
-
-// @mui material components
+import Modal from "react-modal";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDAlert from "components/MDAlert";
 import MDButton from "components/MDButton";
 import MDSnackbar from "components/MDSnackbar";
-
-// Material Dashboard 2 React example components
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
@@ -37,6 +17,8 @@ import jwt from "jwt-decode";
 import axios from "axios";
 import { endPoint } from "contants";
 import toast, { Toaster } from "react-hot-toast";
+import { useMediaQuery } from "react-responsive";
+import { Button } from "@mui/material";
 
 function Notifications() {
   const [successSB, setSuccessSB] = useState(false);
@@ -124,7 +106,9 @@ function Notifications() {
   );
   const dispatch = useDispatch();
 
-  const sendOrder = async (data) => {
+  const cartIs = useSelector((store) => store.root.user.cart);
+
+  const sendOrder = async () => {
     const token = localStorage.getItem("token");
     if (!token) window.location.href = "/authentication/sign-in";
     else {
@@ -132,7 +116,7 @@ function Notifications() {
 
       const medicines = [];
 
-      data.medicines.forEach((e) => {
+      dat.medicines.forEach((e) => {
         let objToPush = {
           Title: e.medicineName,
           Quantity: parseInt(e.purchaseQuantity),
@@ -145,10 +129,12 @@ function Notifications() {
       let payload = {
         state: "PENDING",
         patientEmail: decoded.email,
-        pharmacyId: data.pharmacy.id,
-        pharmacyName: data.pharmacy.name,
+        pharmacyId: dat.pharmacy.id,
+        pharmacyName: dat.pharmacy.name,
         Medicines: medicines,
-        Identifier: Math.floor((Math.random() * 100) + 1) + Date.now()
+        Identifier: Math.floor(Math.random() * 100 + 1) + Date.now(),
+        address,
+        phoneNumber,
       };
 
       console.log({ payload });
@@ -157,7 +143,14 @@ function Notifications() {
         const res = await axios.post(endPoint + "/users/order", payload);
         if (res.data.success) {
           toast.success(`Successfully placed order`);
-          dispatch(pharmDelete(payload.pharmacyId))
+          dispatch(pharmDelete(payload.pharmacyId));
+          
+          cartIs.forEach((med) => {
+            if (med.pharmacyId === payload.pharmacyId) {
+              dispatch(cartDelete(med.Identifier));
+            }
+          });
+          closeModal()
         }
       }
     }
@@ -165,13 +158,105 @@ function Notifications() {
 
   const pharmacies = useSelector((store) => store.root.user.pharmacies);
   const cart = useSelector((store) => store.root.user.cart);
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [dat, setDat] = React.useState({});
+  const isMobile = useMediaQuery({ query: "(max-width: 786px)" });
 
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      position: "relative",
+      maxWidth: isMobile ? "90%" : "35%",
+      transform: "translate(-50%, -50%)",
+      minHeight: 300,
+      borderRadius: 20,
+      paddingTop: 50,
+      paddingBottom: 50,
+      background: "#3F97EF",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "column",
+    },
+    overlay: { zIndex: 1000 },
+  };
+
+  function openModal(data) {
+    setDat(data);
+    setIsOpen(true);
+  }
+
+  const [address, setAddress] = React.useState("");
+  const [phoneNumber, setPhoneNumber] = React.useState("");
+
+  function afterOpenModal() {}
+
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   console.log({ pharmacies });
 
   return pharmacies.length > 0 && cart.length > 0 ? (
     <DashboardLayout>
       <Toaster position="top-center" reverseOrder={false} />
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        ariaHideApp={false}
+        contentLabel="Example Modal"
+      >
+        <div className="input-group" style={{ borderRadius: 10, padding: 5 }}>
+          <input
+          style={{ padding: 25 }}
+            value={address}
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
+            className="form-control"
+            type="text"
+            required="required"
+            placeholder="Enter Quantity"
+          />
+          <label style={{ top: -30, padding: 25 }}>Enter Address</label>
+        </div>
+
+        <div className="input-group" style={{ borderRadius: 10, padding: 5 }}>
+          <input
+          style={{ padding: 25 }}
+            value={phoneNumber}
+            onChange={(e) => {
+              setPhoneNumber(e.target.value);
+            }}
+            className="form-control"
+            type="text"
+            required="required"
+            placeholder="Enter Quantity"
+          />
+          <label style={{ top: -30, padding: 25 }}>Enter Phone</label>
+        </div>
+
+        <Button
+          disabled={
+            address === 0 ||
+            address === "" ||
+            phoneNumber === 0 ||
+            phoneNumber === ""
+          }
+          variant="contained"
+          color="success"
+          style={{ width: 441, marginTop: 40 }}
+          onClick={sendOrder}
+        >
+          CONFIRM PURCHASE
+        </Button>
+      </Modal>
       <DashboardNavbar />
       <MDBox mt={6} mb={3} style={{ display: "flex", flexWrap: "wrap" }}>
         {pharmacies.map((element, index) => (
@@ -185,20 +270,6 @@ function Notifications() {
               >
                 <Grid item xs={12} lg={10}>
                   <Card style={{ minHeight: 500 }}>
-                    <button
-                      className="button-3"
-                      role="button"
-                      onClick={() =>
-                        sendOrder({
-                          medicines: cart.filter(
-                            (e) => e.pharmacyId === element.id,
-                          ),
-                          pharmacy: element,
-                        })
-                      }
-                    >
-                      Place Order
-                    </button>
                     <MDBox p={2}>
                       <MDTypography variant="h5">{element.name}</MDTypography>
                     </MDBox>
@@ -227,6 +298,21 @@ function Notifications() {
                           </MDAlert>
                         </MDBox>
                       ))}
+                    <button
+                      className="button-3 mt-5 ml-1"
+                      role="button"
+                      style={{ margin: 20 }}
+                      onClick={() =>
+                        openModal({
+                          medicines: cart.filter(
+                            (e) => e.pharmacyId === element.id,
+                          ),
+                          pharmacy: element,
+                        })
+                      }
+                    >
+                      Place Order
+                    </button>
                   </Card>
                 </Grid>
               </Grid>

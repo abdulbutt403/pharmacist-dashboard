@@ -1,6 +1,6 @@
 .button-3 {
   appearance: none;
-  background-color: #2ea44f;
+  background-color: #2ea4a0;
   border: 1px solid rgba(27, 31, 35, .15);
   border-radius: 6px;
   box-shadow: rgba(27, 31, 35, .1) 0 1px 0;
@@ -21,9 +21,10 @@
   touch-action: manipulation;
   vertical-align: middle;
   white-space: nowrap;
-  position: absolute;
+  transform: translateX(10px);
   bottom: 10px;
-  right: 10px
+  min-height: 50px;
+  right: 10px;
 }
 
 .button-3:focus:not(:focus-visible):not(.focus-visible) {
@@ -32,7 +33,7 @@
 }
 
 .button-3:hover {
-  background-color: #2c974b;
+  background-color: #2ea4a0;
 }
 
 .button-3:focus {
@@ -107,11 +108,52 @@
     box-shadow 0.1s ease-in-out;
 }
 
+
+.input-group-2 {
+  display: block;
+  width: 441px;
+  max-width: 100%;
+  height: 82px;
+  border: 0;
+  background-color: #ffffff;
+  border-bottom-left-radius: 11px;
+  border-bottom-right-radius: 11px;
+  border-top-left-radius: 11px;
+  border-top-right-radius: 0;
+  box-shadow: 0 17px 40px 0 rgba(75, 128, 182, 0.07);
+  margin-bottom: 22px;
+  position: relative;
+  font-size: 17px;
+  color: #a7b4c1;
+  transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out,
+    box-shadow 0.1s ease-in-out;
+}
+
+
 .input-group:hover {
   box-shadow: 0 14px 44px 0 rgba(0, 0, 0, 0.077);
 }
 
 .input-group input {
+  position: absolute;
+  border: 0;
+  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0);
+  top: 0;
+  height: 65px;
+  width: 100%;
+  padding: 0 53px;
+  box-sizing: border-box;
+  z-index: 3;
+  display: block;
+  color: #1a6fc4;
+  font-size: 17px;
+  font-family: "Oxygen", sans-serif;
+  transition: top 0.1s ease-in-out;
+  outline: none;
+}
+
+.input-group-2 input {
   position: absolute;
   border: 0;
   box-shadow: none;
@@ -161,6 +203,41 @@
   font-size: 13px;
   opacity: 0.7;
 }
+
+
+
+.input-group-2 input::placeholder {
+  color: rgba(0, 0, 0, 0);
+}
+
+.input-group-2 input:focus,
+.input-group-2 input:not(:placeholder-shown) {
+  top: -5px;
+}
+
+.input-group-2 label {
+  position: absolute;
+  border: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 0 53px;
+  box-sizing: border-box;
+  transition: all 0.1s ease-in-out;
+  cursor: text;
+}
+
+.input-group-2 input:focus + label,
+.input-group-2 input:not(:placeholder-shown) + label {
+  bottom: 20px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
 
 .req-mark {
   position: absolute;
@@ -217,4 +294,63 @@
   color: rgb(43, 42, 42);
   transition: opacity 0.2s ease-in-out, filter 0.2s ease-in-out,
     box-shadow 0.1s ease-in-out;
+}
+
+
+.heading {
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.searchInputWrapper {
+  position: relative;
+}
+
+.searchInput {
+  width: 30rem;
+  height: 3rem;
+  padding: 0 1rem; 
+  border-radius: 2rem;
+  border: none;
+  transition: transform 0.1s ease-in-out;
+  
+}
+
+::placeholder {
+  color: #a1a1a1;
+}
+
+/* hide the placeholder text on focus */
+:focus::placeholder {
+  text-indent: -999px
+}
+
+.searchInput:focus {
+  outline: none;
+  transform: scale(1.1);
+  transition: all 0.1s ease-in-out;
+}
+
+.searchInputIcon {
+  position: absolute;
+  right: 0.8rem;
+  top: 0.8rem;
+  color: #a1a1a1;
+  transition: all 0.1s ease-in-out;
+}
+
+.container:focus-within > 
+.searchInputWrapper > .searchInputIcon {
+  right: 0.2rem;
+}
+
+
+.cloudinary-button{
+  width: 168px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
 }

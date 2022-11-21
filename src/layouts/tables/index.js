@@ -145,12 +145,32 @@ function Tables() {
                         {
                           title: "Status",
                           render: (rowData) => (
-                            <MDBadge
-                              badgeContent={rowData.state}
-                              color="secondary"
-                              variant="gradient"
-                              size="lg"
-                            />
+                            <>
+                              {rowData.state === "PENDING" && (
+                                <MDBadge
+                                  badgeContent={rowData.state}
+                                  color="secondary"
+                                  variant="gradient"
+                                  size="lg"
+                                />
+                              )}
+                              {rowData.state === "DELIVERED" && (
+                                <MDBadge
+                                  badgeContent={rowData.state}
+                                  color="info"
+                                  variant="gradient"
+                                  size="lg"
+                                />
+                              )}
+                              {rowData.state === "REJECTED" && (
+                                <MDBadge
+                                  badgeContent={rowData.state}
+                                  color="primary"
+                                  variant="gradient"
+                                  size="lg"
+                                />
+                              )}
+                            </>
                           ),
                         },
                         {
@@ -176,7 +196,8 @@ function Tables() {
                         {
                           icon: () => <Search />,
                           tooltip: "find medicine",
-                          onClick: (event, rowData) => openPharmacy(event, rowData),
+                          onClick: (event, rowData) =>
+                            openPharmacy(event, rowData),
                         },
                       ]}
                       data={data}
@@ -198,7 +219,7 @@ function Tables() {
               </Grid>
             )}
 
-{medicine && (
+            {medicine && (
               <Grid item xs={12}>
                 <Card>
                   <MDBox
@@ -206,7 +227,11 @@ function Tables() {
                     mt={-3}
                     py={3}
                     px={2}
-                    style={{ display: "flex", width: "100%", justifyContent: "space-between" }}
+                    style={{
+                      display: "flex",
+                      width: "100%",
+                      justifyContent: "space-between",
+                    }}
                     variant="gradient"
                     bgColor="info"
                     borderRadius="lg"
@@ -243,7 +268,7 @@ function Tables() {
                         },
                         {
                           title: "Name",
-                          field: "Title"
+                          field: "Title",
                         },
                         {
                           title: "Stock",
@@ -251,7 +276,7 @@ function Tables() {
                         },
                         {
                           title: "Price (Per Tablet)",
-                          field: "Price"
+                          field: "Price",
                         },
                       ]}
                       data={stocks}
@@ -260,12 +285,12 @@ function Tables() {
                         headerStyle: {
                           backgroundColor: "transparent",
                           color: "#7b809a",
-                          fontSize: '0.8rem',
+                          fontSize: "0.8rem",
                           opacity: 0.7,
                           fontStyle: "normal",
                           fontWeight: 700,
-                          textTransform: 'uppercase'
-                        }
+                          textTransform: "uppercase",
+                        },
                       }}
                     />
                   </MDBox>

@@ -47,6 +47,7 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Pharmacies from "layouts/Pharmacies";
+import EditProfile from "layouts/EditProfile";
 
 const routes = [
   {
@@ -80,6 +81,14 @@ const routes = [
     icon: <Icon fontSize="small">Reports</Icon>,
     route: "/notifications",
     component: <Notifications />,
+  },
+  {
+    type: "collapse",
+    name: "Edit Profile",
+    key: "edit_profile",
+    icon: <Icon fontSize="small">Edit</Icon>,
+    route: "/edit_profile",
+    component: <EditProfile />,
   },
   {
     type: "collapse",

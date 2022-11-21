@@ -29,7 +29,8 @@ import {
 
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
+  const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } =
+    controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
 
@@ -47,8 +48,14 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     // A function that sets the mini state of the sidenav.
     function handleMiniSidenav() {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
-      setTransparentSidenav(dispatch, window.innerWidth < 1200 ? false : transparentSidenav);
-      setWhiteSidenav(dispatch, window.innerWidth < 1200 ? false : whiteSidenav);
+      setTransparentSidenav(
+        dispatch,
+        window.innerWidth < 1200 ? false : transparentSidenav,
+      );
+      setWhiteSidenav(
+        dispatch,
+        window.innerWidth < 1200 ? false : whiteSidenav,
+      );
     }
 
     /** 
@@ -87,7 +94,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </Link>
         ) : (
           <NavLink key={key} to={route}>
-            <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
+            <SidenavCollapse
+              name={name}
+              icon={icon}
+              active={key === collapseName}
+            />
           </NavLink>
         );
       } else if (type === "title") {
@@ -143,12 +154,19 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDTypography>
         </MDBox>
         <MDBox component={NavLink} to="/" display="flex" alignItems="center">
-          {brand && <MDBox component="img" src={brand} alt="Brand" width="2rem" />}
+          {brand && (
+            <MDBox component="img" src={brand} alt="Brand" width="2rem" />
+          )}
           <MDBox
             width={!brandName && "100%"}
             sx={(theme) => sidenavLogoLabel(theme, { miniSidenav })}
           >
-            <MDTypography component="h6" variant="button" fontWeight="medium" color={textColor}>
+            <MDTypography
+              component="h6"
+              variant="button"
+              fontWeight="medium"
+              color={textColor}
+            >
               {brandName}
             </MDTypography>
           </MDBox>
@@ -162,7 +180,18 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       />
       <List>
         <>{renderRoutes}</>
-        <button style={sideLink}><Icon fontSize="small" style={{marginRight: 18}}>login</Icon>Logout</button>
+        <button
+          style={sideLink}
+          onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/authentication/sign-in";
+          }}
+        >
+          <Icon fontSize="small" style={{ marginRight: 18 }}>
+            login
+          </Icon>
+          Logout
+        </button>
       </List>
     </SidenavRoot>
   );
@@ -176,12 +205,32 @@ Sidenav.defaultProps = {
 
 // Typechecking props for the Sidenav
 Sidenav.propTypes = {
-  color: PropTypes.oneOf(["primary", "secondary", "info", "success", "warning", "error", "dark"]),
+  color: PropTypes.oneOf([
+    "primary",
+    "secondary",
+    "info",
+    "success",
+    "warning",
+    "error",
+    "dark",
+  ]),
   brand: PropTypes.string,
   brandName: PropTypes.string.isRequired,
   routes: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
-const sideLink = {background: 'transparent', color: "#fff", outline: 'none', border: 'none', width: '100%', textAlign: 'left', paddingLeft: 30, display: 'flex',alignItems: 'center', marginTop: 20, cursor: 'pointer'}
+const sideLink = {
+  background: "transparent",
+  color: "#fff",
+  outline: "none",
+  border: "none",
+  width: "100%",
+  textAlign: "left",
+  paddingLeft: 30,
+  display: "flex",
+  alignItems: "center",
+  marginTop: 20,
+  cursor: "pointer",
+};
 
 export default Sidenav;

@@ -38,6 +38,7 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
+import Samples from "layouts/samples";
 import Billing from "layouts/billing";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
@@ -47,6 +48,7 @@ import SignUp from "layouts/authentication/sign-up";
 // @mui icons
 import Icon from "@mui/material/Icon";
 import Pharmacies from "layouts/Pharmacies";
+import Labs from "layouts/Labs";
 import EditProfile from "layouts/EditProfile";
 
 const routes = [
@@ -68,11 +70,27 @@ const routes = [
   },
   {
     type: "collapse",
+    name: "Sample Requests",
+    key: "samples",
+    icon: <Icon fontSize="small">table_view</Icon>,
+    route: "/samples",
+    component: <Samples />,
+  },
+  {
+    type: "collapse",
     name: "Pharmacies",
     key: "pharmacies",
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/pharmacies",
     component: <Pharmacies />,
+  },
+  {
+    type: "collapse",
+    name: "Labs",
+    key: "labs",
+    icon: <Icon fontSize="small">receipt</Icon>,
+    route: "/labs",
+    component: <Labs />,
   },
   {
     type: "collapse",

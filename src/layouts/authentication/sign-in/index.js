@@ -10,7 +10,7 @@ import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
-
+import toast, { Toaster } from "react-hot-toast";
 // @mui icons
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
@@ -58,6 +58,7 @@ function Basic() {
         }, 2000);
       }
     } else {
+      toast.error(`Please Check Your Fields...`);
     }
   }
 
@@ -130,18 +131,7 @@ function Basic() {
                 fullWidth
               />
             </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-              <MDTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-              >
-                &nbsp;&nbsp;Remember me
-              </MDTypography>
-            </MDBox>
+            <div style={{textAlign: 'end'}}><p style={{fontSize: 12, color: 'red', textDecoration: 'underline', cursor: 'pointer'}}>forgot password ?</p></div>
             <MDBox mt={4} mb={1}>
               <MDButton
                 variant="gradient"

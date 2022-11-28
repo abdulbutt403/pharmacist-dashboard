@@ -42,6 +42,7 @@ import { Navigate } from "react-router-dom";
 function Notifications() {
   const [Identifier, setIdentifier] = React.useState("");
   const [imgSrc, SetImage] = React.useState("");
+  const [notF, setNotF] = React.useState(false);
   const isAuth = useSelector((store) => store.root.user.authenticated);
 
   const GetData = async () => {
@@ -50,6 +51,10 @@ function Notifications() {
     };
 
     const posts = await axios.post(endPoint + "/users/getReport", payload);
+    const found = posts.data.found;
+    if (!found) {
+      setNotF(true);
+    }
     SetImage(posts.data.found.Image);
   };
 
@@ -62,10 +67,10 @@ function Notifications() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
         }}
       >
-        <h1 className="heading">Enter secret number given by your Lab</h1>
+        <h1 className="heading">Enter Request ID to search for its Report</h1>
         <div className="searchInputWrapper">
           <input
             className="searchInput"
@@ -83,13 +88,14 @@ function Notifications() {
           ></i>
         </div>
         {!(imgSrc === "") && (
-        <img
-          style={{ maxWidth: 800, objectFit: "contain", marginTop: 50 }}
-          src={imgSrc}
-        />
-      )}
+          <img
+            style={{ maxWidth: 800, objectFit: "contain", marginTop: 50 }}
+            src={imgSrc}
+          />
+        )}
+
+        {notF && <h1 className="heading" style={{fontSize: 14, color: 'red', fontWeight: '500', textTransform: 'uppercase', marginTop: 100}}>No Report Uploaded Agaisnt this number Yet</h1>}
       </div>
- 
     </DashboardLayout>
   ) : (
     <Navigate to="/authentication/sign-in" />

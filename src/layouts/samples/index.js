@@ -143,8 +143,8 @@ function Tables() {
                           field: "patientEmail",
                         },
                         {
-                          title: "Requested Date",
-                          field: "Date_Requested",
+                          title: "REQUEST ID",
+                          field: "Identifier",
                         },
                         {
                           title: "Status",

@@ -76,6 +76,8 @@ function Pharmacies() {
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [reason, setReason] = React.useState("");
+  const [tests, setTests] = React.useState([])
+  const [row, setRow] = React.useState("");
   const [requestedDate, setDate] = React.useState("");
   const [requestedTime, setTime] = React.useState("");
   const [rowData, setRowData] = React.useState(null);
@@ -84,8 +86,10 @@ function Pharmacies() {
   console.log({ store });
 
   function openModal(rowData) {
-    setSelectedId(rowData._id)
-    setSelectedName(rowData.fullName)
+    setTests(rowData.tests)
+    setRow(rowData);
+    setSelectedId(rowData._id);
+    setSelectedName(rowData.fullName);
     setRowData(rowData);
     setIsOpen(true);
   }
@@ -98,24 +102,26 @@ function Pharmacies() {
     else {
       const decoded = jwt(token);
 
-
       let payload = {
-        labId : selectedId,
-        labName : selectedName,
-        Reason : reason,
-        Date_Requested : requestedDate,
+        labId: selectedId,
+        labName: selectedName,
+        Reason: reason,
+        Date_Requested: requestedDate,
         state: "PENDING",
         patientEmail: decoded.email,
-        Identifier: Math.floor((Math.random() * 100) + 1) + Date.now()
+        Identifier: Math.floor(Math.random() * 100 + 1) + Date.now(),
       };
 
       console.log({ payload });
 
       if (payload) {
-        const res = await axios.post(endPoint + "/users/sample_request", payload);
+        const res = await axios.post(
+          endPoint + "/users/sample_request",
+          payload,
+        );
         if (res.data.success) {
           toast.success(`Successfully placed request`);
-          closeModal()
+          closeModal();
         }
       }
     }
@@ -179,16 +185,29 @@ function Pharmacies() {
         contentLabel="Example Modal"
       >
         <div className="input2">
-          <textarea
-            value={reason}
-            onChange={(e) => {
-              setReason(e.target.value);
-            }}
-            className="form-control"
-            type="text"
-            required="required"
-            placeholder="Enter Details (Reason)"
-          />
+          {tests.map((el) => (
+            <p
+            onClick={() => setReason(el.title)}
+              style={{
+                background: reason === el.title ? "green" : "#fff" ,
+                color: reason === el.title ? "#fff" : "#000" ,
+                width: "100%",
+                borderRadius: 4,
+                padding: 4,
+                marginBottom: 10,
+                fontSize: 14,
+                textTransform: 'uppercase',
+                cursor: 'pointer',
+                height: 40,
+                display: 'flex',
+                alignItems: 'center'
+
+              }}
+            >
+              {el.title}
+              <span>{el.price}</span>
+            </p>
+          ))}
 
           <input
             value={requestedDate}
@@ -197,7 +216,7 @@ function Pharmacies() {
             }}
             className="form-control"
             type="date"
-            min={new Date().toISOString().split('T')[0]}
+            min={new Date().toISOString().split("T")[0]}
             required="required"
             placeholder="At what date you want"
           />

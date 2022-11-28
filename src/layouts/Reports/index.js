@@ -88,10 +88,14 @@ function Notifications() {
           ></i>
         </div>
         {!(imgSrc === "") && (
+          <>
           <img
             style={{ maxWidth: 800, objectFit: "contain", marginTop: 50 }}
             src={imgSrc}
           />
+
+          <a href={imgSrc} download={'Report.png'}>Download</a>
+          </>
         )}
 
         {notF && <h1 className="heading" style={{fontSize: 14, color: 'red', fontWeight: '500', textTransform: 'uppercase', marginTop: 100}}>No Report Uploaded Agaisnt this number Yet</h1>}

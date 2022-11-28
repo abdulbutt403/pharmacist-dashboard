@@ -38,12 +38,17 @@ import axios from "axios";
 import { endPoint } from "contants";
 import toast, { Toaster } from "react-hot-toast";
 import { Navigate } from "react-router-dom";
+import { saveAs } from 'file-saver'
 
 function Notifications() {
   const [Identifier, setIdentifier] = React.useState("");
   const [imgSrc, SetImage] = React.useState("");
   const [notF, setNotF] = React.useState(false);
   const isAuth = useSelector((store) => store.root.user.authenticated);
+
+  const downloadImage = () => {
+    saveAs(imgSrc, 'image.jpg') // Put your image url here.
+  }
 
   const GetData = async () => {
     const payload = {
@@ -94,7 +99,7 @@ function Notifications() {
             src={imgSrc}
           />
 
-          <a href={imgSrc} download={'Report.png'}>Download</a>
+          <a  onClick={downloadImage} style={{border: 'none', background: 'green', color: "#fff", padding: 4, marginTop: 20, borderRadius: 4, cursor: 'pointer'}}>Download</a>
           </>
         )}
 

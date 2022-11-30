@@ -48,7 +48,7 @@ function SidenavCollapse({ icon, name, active, margin, ...rest }) {
   } = controller;
 
   return (
-    <div style={{position: 'relative'}}>
+    <div style={{ position: 'relative' }}>
       <ListItem component="li" style={{ marginLeft: margin ? 20 : 0 }}>
         <MDBox
           {...rest}
@@ -62,7 +62,7 @@ function SidenavCollapse({ icon, name, active, margin, ...rest }) {
             })
           }
         >
-         {margin ? <i class="fa fa-angle-right" aria-hidden="true"></i> : <ListItemIcon
+          {margin ? <i className="fa fa-angle-right" aria-hidden="true"></i> : <ListItemIcon
             sx={(theme) =>
               collapseIconBox(theme, {
                 transparentSidenav,

@@ -120,6 +120,7 @@ function EditProfile() {
       const payload = { patientEmail : decoded.email, email, password, fullName, address };
       const posts = await axios.post(endPoint + "/users/editPatient", payload);
       console.log({ posts });
+      localStorage.setItem('upAddress', address)
       toast.success('Profile Updated Successfully')
       setLoading(false);
     }

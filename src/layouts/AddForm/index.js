@@ -147,8 +147,13 @@ function Pharmacies() {
     const token = localStorage.getItem("token");
     if (!token) window.location.href = "/authentication/sign-in";
     if (e.target.checked) {
-      const decoded = jwt(token);
-      setAddress(decoded.address);
+      let addressLocal = localStorage.getItem("upAddress");
+      if (addressLocal) {
+        setAddress(addressLocal);
+      } else {
+        const decoded = jwt(token);
+        setAddress(decoded.address);
+      }
     } else {
       setAddress("");
     }
@@ -209,9 +214,17 @@ function Pharmacies() {
                     </span>
                   )}
                 </div>
-                <div style={{ display: "flex", width: "84%" , transform: 'translateY(10px)'}}>
+                <div
+                  style={{
+                    display: "flex",
+                    width: "84%",
+                    transform: "translateY(10px)",
+                  }}
+                >
                   <input type={"checkbox"} onChange={handleCheck} />
-                  <a className="useexist" style={{color: 'black'}}>Use Existing Addess</a>
+                  <a className="useexist" style={{ color: "black" }}>
+                    Use Existing Addess
+                  </a>
                 </div>
                 <MDBox mt={4} mb={1}>
                   <MDButton

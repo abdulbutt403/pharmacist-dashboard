@@ -202,13 +202,18 @@ function Notifications() {
   const handleCheck = (e) => {
     const token = localStorage.getItem("token");
     if (!token) window.location.href = "/authentication/sign-in";
-   if(e.target.checked){
-     const decoded = jwt(token);
-     setAddress(decoded.address)
-   } else{
-    setAddress("")
-   }
-  }
+    if (e.target.checked) {
+      let addressLocal = localStorage.getItem("upAddress");
+      if (addressLocal) {
+        setAddress(addressLocal);
+      } else {
+        const decoded = jwt(token);
+        setAddress(decoded.address);
+      }
+    } else {
+      setAddress("");
+    }
+  };
 
   return pharmacies.length > 0 && cart.length > 0 ? (
     <DashboardLayout>

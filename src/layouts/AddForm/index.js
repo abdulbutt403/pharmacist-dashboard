@@ -120,12 +120,12 @@ function Pharmacies() {
     else {
       const decoded = jwt(token);
       const body = {
-        Identifier: Math.floor((Math.random() * 100) + 1) + Date.now(),
+        Identifier: Math.floor(Math.random() * 100 + 1) + Date.now(),
         Image: selectedImage,
         patientEmail: decoded.email,
         pharmacyEmail,
         address,
-        phoneNumber
+        phoneNumber,
       };
       console.log({ body });
       const result = await axios.post(
@@ -138,8 +138,19 @@ function Pharmacies() {
       setSelectedImage("");
       setPharmacyEmail("");
       setPharmacyEmail("");
-      setPhoneNumber("")
-      setAddress("")
+      setPhoneNumber("");
+      setAddress("");
+    }
+  };
+
+  const handleCheck = (e) => {
+    const token = localStorage.getItem("token");
+    if (!token) window.location.href = "/authentication/sign-in";
+    if (e.target.checked) {
+      const decoded = jwt(token);
+      setAddress(decoded.address);
+    } else {
+      setAddress("");
     }
   };
 
@@ -198,6 +209,10 @@ function Pharmacies() {
                     </span>
                   )}
                 </div>
+                <div style={{ display: "flex", width: "84%" , transform: 'translateY(10px)'}}>
+                  <input type={"checkbox"} onChange={handleCheck} />
+                  <a className="useexist" style={{color: 'black'}}>Use Existing Addess</a>
+                </div>
                 <MDBox mt={4} mb={1}>
                   <MDButton
                     variant="gradient"
@@ -207,7 +222,7 @@ function Pharmacies() {
                       original_filename === "" ||
                       original_filename === 0 ||
                       pharmacyEmail.length === 0 ||
-                      pharmacyEmail === ""||
+                      pharmacyEmail === "" ||
                       address.length === 0 ||
                       address === "" ||
                       phoneNumber.length === 0 ||
@@ -215,7 +230,7 @@ function Pharmacies() {
                     }
                     onClick={() => completeOrder()}
                   >
-                    SEND PRESCRIPTION 
+                    SEND PRESCRIPTION
                   </MDButton>
                 </MDBox>
               </Card>

@@ -313,12 +313,41 @@ function Pharmacies() {
                           title: "Price (Per Tablet)",
                           field: "Price"
                         },
+                        {
+                          title: "Price (Per Tablet)",
+                          field: "Price"
+                        },
+                        {
+                          title: "Prescription required",
+                          render: (rowData) => (
+                            <>
+                              {rowData.Prescription ? (
+                                <MDBadge
+                                  badgeContent={`YES`}
+                                  color="danger"
+                                  variant="gradient"
+                                  size="lg"
+                                />
+                              )
+                              :(
+                                <MDBadge
+                                badgeContent={`NO`}
+                                color="primary"
+                                variant="gradient"
+                                size="lg"
+                              />
+                              )}
+                            </>
+                          ),
+                        }
                       ]}
                       actions={[
                         {
                           icon: () => <SaveAlt />,
                           tooltip: "add to cart",
-                          onClick: (event, rowData) => openModal(rowData),
+                          onClick: (event, rowData) => {
+                            rowData.Prescription ? window.location.href = '/prescriptions': openModal(rowData)
+                          },
                         },
                       ]}
                       data={stocks}

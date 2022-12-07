@@ -656,3 +656,15 @@
   background-color: #d9534f;
   border: 1px solid #d9534f;
 }
+
+.useexist{
+  display: block;
+  width: 90%;
+  padding: 0 4px;
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 12px;
+  cursor: pointer;
+  min-width: 200px;
+
+}

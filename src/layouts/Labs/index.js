@@ -30,7 +30,7 @@ import React, { forwardRef, useState, useEffect } from "react";
 import axios from "axios";
 import { endPoint } from "contants";
 import { useMediaQuery } from "react-responsive";
-import { Button } from "@mui/material";
+import { Button, MenuItem, Select } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import { setPharmacies } from "shared/reducers/UserSlice";
 import { cartAdd } from "shared/reducers/UserSlice";
@@ -87,6 +87,7 @@ function Pharmacies() {
 
   function openModal(rowData) {
     setTests(rowData.tests)
+    setReason(rowData.tests[0].title)
     setRow(rowData);
     setSelectedId(rowData._id);
     setSelectedName(rowData.fullName);
@@ -185,30 +186,6 @@ function Pharmacies() {
         contentLabel="Example Modal"
       >
         <div className="input2">
-          {tests.map((el) => (
-            <p
-            onClick={() => setReason(el.title)}
-              style={{
-                background: reason === el.title ? "green" : "#fff" ,
-                color: reason === el.title ? "#fff" : "#000" ,
-                width: "100%",
-                borderRadius: 4,
-                padding: 4,
-                marginBottom: 10,
-                fontSize: 14,
-                textTransform: 'uppercase',
-                cursor: 'pointer',
-                height: 40,
-                display: 'flex',
-                alignItems: 'center'
-
-              }}
-            >
-              {el.title}
-              <span>{el.price}</span>
-            </p>
-          ))}
-
           <input
             value={requestedDate}
             onChange={(e) => {
@@ -221,6 +198,20 @@ function Pharmacies() {
             placeholder="At what date you want"
           />
         </div>
+        <Select
+          style={{
+            width: 441,
+            marginTop: 30,
+            background: '#fff',
+            height: 60,
+            marginBottom: 12,
+            cursor: 'pointer'
+          }}
+          value={reason}
+          onChange={(e) => setReason(e.target.value)}
+        >
+          {tests.map((e,i) => (<MenuItem key={i} value={e.title}>{e.title}</MenuItem>))}
+        </Select>
         <Button
           disabled={reason.length === 0 || requestedDate === ""}
           variant="contained"

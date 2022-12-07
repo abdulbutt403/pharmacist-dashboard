@@ -144,13 +144,13 @@ function Notifications() {
         if (res.data.success) {
           toast.success(`Successfully placed order`);
           dispatch(pharmDelete(payload.pharmacyId));
-          
+
           cartIs.forEach((med) => {
             if (med.pharmacyId === payload.pharmacyId) {
               dispatch(cartDelete(med.Identifier));
             }
           });
-          closeModal()
+          closeModal();
         }
       }
     }
@@ -199,7 +199,16 @@ function Notifications() {
     setIsOpen(false);
   }
 
-  console.log({ pharmacies });
+  const handleCheck = (e) => {
+    const token = localStorage.getItem("token");
+    if (!token) window.location.href = "/authentication/sign-in";
+   if(e.target.checked){
+     const decoded = jwt(token);
+     setAddress(decoded.address)
+   } else{
+    setAddress("")
+   }
+  }
 
   return pharmacies.length > 0 && cart.length > 0 ? (
     <DashboardLayout>
@@ -214,7 +223,7 @@ function Notifications() {
       >
         <div className="input-group" style={{ borderRadius: 10, padding: 5 }}>
           <input
-          style={{ padding: 25 }}
+            style={{ padding: 25 }}
             value={address}
             onChange={(e) => {
               setAddress(e.target.value);
@@ -226,10 +235,9 @@ function Notifications() {
           />
           <label style={{ top: -30, padding: 25 }}>Enter Address</label>
         </div>
-
         <div className="input-group" style={{ borderRadius: 10, padding: 5 }}>
           <input
-          style={{ padding: 25 }}
+            style={{ padding: 25 }}
             value={phoneNumber}
             onChange={(e) => {
               setPhoneNumber(e.target.value);
@@ -242,6 +250,10 @@ function Notifications() {
           <label style={{ top: -30, padding: 25 }}>Enter Phone</label>
         </div>
 
+        <div style={{ display: "flex", width: '84%' }}>
+          <input type={"checkbox"} onChange={handleCheck}/>
+          <a className="useexist">Use Existing Addess</a>
+        </div>
         <Button
           disabled={
             address === 0 ||

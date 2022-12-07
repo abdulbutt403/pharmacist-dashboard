@@ -31,13 +31,14 @@ import { endPoint } from "contants";
 import { MenuItem, Select } from "@mui/material";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { signIn } from 'shared/reducers/UserSlice'
+import { signIn } from "shared/reducers/UserSlice";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
   var [email, setEmail] = useState("admin@pharmacist.com");
   var [password, setPassword] = useState("password");
   var [role, setRole] = useState("PATIENT");
+  var [forgot, setForgot] = useState("PATIENT");
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const dispatch = useDispatch();
 
@@ -52,21 +53,23 @@ function Basic() {
         console.log({ res });
 
         if (res.data.token) {
-          dispatch(signIn())
+          dispatch(signIn());
           setTimeout(() => {
             localStorage.setItem("token", res.data.token);
-            window.location.href = "/dashboard"
+            window.location.href = "/dashboard";
           }, 2000);
         }
       } else {
         toast.error(`Please Check Your Fields...`);
       }
-    }
-    catch (err) {
-      toast.error(`Authorization Error...`);
+    } catch (err) {
+      if (err.response.data.message === "Not Verified") {
+        toast.error(`Account not verified...`);
+      } else {
+        toast.error(`Authorization Error...`);
+      }
     }
   }
-
 
   // function signOut(dispatch, history) {
   //   localStorage.removeItem("id_token");
@@ -92,19 +95,39 @@ function Basic() {
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
               Sign in
             </MDTypography>
-            <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+            <Grid
+              container
+              spacing={3}
+              justifyContent="center"
+              sx={{ mt: 1, mb: 2 }}
+            >
               <Grid item xs={2}>
-                <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+                <MDTypography
+                  component={MuiLink}
+                  href="#"
+                  variant="body1"
+                  color="white"
+                >
                   <FacebookIcon color="inherit" />
                 </MDTypography>
               </Grid>
               <Grid item xs={2}>
-                <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+                <MDTypography
+                  component={MuiLink}
+                  href="#"
+                  variant="body1"
+                  color="white"
+                >
                   <GitHubIcon color="inherit" />
                 </MDTypography>
               </Grid>
               <Grid item xs={2}>
-                <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+                <MDTypography
+                  component={MuiLink}
+                  href="#"
+                  variant="body1"
+                  color="white"
+                >
                   <GoogleIcon color="inherit" />
                 </MDTypography>
               </Grid>
@@ -113,7 +136,12 @@ function Basic() {
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
               <Select
-                style={{ width: "100%", marginTop: 30, height: 40, marginBottom: 20 }}
+                style={{
+                  width: "100%",
+                  marginTop: 30,
+                  height: 40,
+                  marginBottom: 20,
+                }}
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
               >
@@ -137,7 +165,19 @@ function Basic() {
                   fullWidth
                 />
               </MDBox>
-              <div style={{ textAlign: 'end' }}><p style={{ fontSize: 12, color: 'red', textDecoration: 'underline', cursor: 'pointer' }}>forgot password ?</p></div>
+              <div style={{ textAlign: "end" }}>
+                <p
+                  style={{
+                    fontSize: 12,
+                    color: "red",
+                    textDecoration: "underline",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setForgot(true)}
+                >
+                  forgot password ?
+                </p>
+              </div>
               <MDBox mt={4} mb={1}>
                 <MDButton
                   variant="gradient"

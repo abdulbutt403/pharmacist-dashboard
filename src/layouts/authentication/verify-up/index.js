@@ -14,9 +14,8 @@ import { MenuItem, Select } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 
 function Cover() {
-  var [email, setEmail] = useState("admin@pharmacist.com");
-  var [fullName, setfullName] = useState("admin@pharmacist.com");
-  var [password, setPassword] = useState("");
+  var [email, setEmail] = useState("");
+  var [code, setCode] = useState("");
   var [role, setRole] = useState("PATIENT");
   const [checked, setChecked] = React.useState(true);
   const [terms, setTerms] = React.useState(false);
@@ -33,27 +32,24 @@ function Cover() {
     return false;
   }
 
-  async function createUser(login, password, fullName, role) {
-    if (!ValidateEmail(login)) {
+
+  async function VerifyUser() {
+    let body = {email,code,role}
+    if (!ValidateEmail(email)) {
       toast.error(`Please Enter a valid email..!`);
-    } else if (!checked) {
-      toast.error(`Please Agree to terms and conditions`);
-    } else if (!!login && !!password && !!role && checked) {
+    } 
+    else if (!!email && !!code && !!role) {
       try {
-        const res = await axios.post(endPoint + "/users/create", {
-          email: login,
-          password: password,
-          role: role,
-          fullName: fullName,
-        });
+        const res = await axios.post(endPoint + "/users/verify", body);
+        console.log({res})
         if (res.data.success) {
-          toast.success("A verification code is sent to your email");
+          toast.success("Successfully Verified");
           setTimeout(() => {
-            window.location.href = '/authentication/verify'
+            window.location.href = '/authentication/sign-in'
           }, 1500);
         }
-        if (res.data.msg.length) {
-          toast.error(`Patient already exist`);
+        else{
+          toast.error("Verification Unsuccessful");
         }
       } catch (error) {
         console.log(error);
@@ -64,6 +60,7 @@ function Cover() {
       toast.error(`Please Check Your Fields...`);
     }
   }
+
 
   return (
     <React.Fragment>
@@ -81,15 +78,15 @@ function Cover() {
             textAlign="center"
           >
             <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-              Join us today
+              Account Verification
             </MDTypography>
             <MDTypography display="block" variant="button" color="white" my={1}>
-              Enter your email and password to register
+              Enter 6 digit verification code
             </MDTypography>
           </MDBox>
           <MDBox pt={4} pb={3} px={3}>
             <MDBox component="form" role="form">
-              <Select
+            <Select
                 style={{
                   width: "100%",
                   marginTop: 30,
@@ -101,17 +98,7 @@ function Cover() {
               >
                 <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
               </Select>
-              <MDBox mb={2}>
-                <MDInput
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setfullName(e.target.value)}
-                  label="Name"
-                  variant="standard"
-                  fullWidth
-                />
-              </MDBox>
-              <MDBox mb={2}>
+            <MDBox mb={2}>
                 <MDInput
                   type="email"
                   label="Email"
@@ -123,64 +110,25 @@ function Cover() {
               </MDBox>
               <MDBox mb={2}>
                 <MDInput
-                  type="password"
-                  label="Password"
+                  type="text"
+                  value={code}
+                  onChange={(e) => {
+                    setCode(e.target.value)
+                  }}
+                  label="code"
                   variant="standard"
                   fullWidth
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                 />
-              </MDBox>
-              <MDBox display="flex" alignItems="center" ml={-1}>
-                <Checkbox
-                  checked={checked}
-                  onChange={handleChange}
-                  inputProps={{ "aria-label": "controlled" }}
-                />
-                <MDTypography
-                  variant="button"
-                  fontWeight="regular"
-                  color="text"
-                  sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-                >
-                  &nbsp;&nbsp;I agree the&nbsp;
-                </MDTypography>
-                <MDTypography
-                  component="a"
-                  href="#"
-                  variant="button"
-                  fontWeight="bold"
-                  color="info"
-                  textGradient
-                  onClick={()=> setTerms(true)}
-                >
-                  Terms and Conditions
-                </MDTypography>
               </MDBox>
               <MDBox mt={4} mb={1}>
                 <MDButton
                   variant="gradient"
                   color="info"
                   fullWidth
-                  onClick={() => createUser(email, password, fullName, role)}
+                  onClick={() => VerifyUser()}
                 >
-                  sign up
+                  verify account
                 </MDButton>
-              </MDBox>
-              <MDBox mt={3} mb={1} textAlign="center">
-                <MDTypography variant="button" color="text">
-                  Already have an account?{" "}
-                  <MDTypography
-                    component={Link}
-                    to="/authentication/sign-in"
-                    variant="button"
-                    color="info"
-                    fontWeight="medium"
-                    textGradient
-                  >
-                    Sign In
-                  </MDTypography>
-                </MDTypography>
               </MDBox>
             </MDBox>
           </MDBox>

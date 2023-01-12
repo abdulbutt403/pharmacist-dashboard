@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Modal from "react-modal";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -19,13 +19,17 @@ import { endPoint } from "contants";
 import toast, { Toaster } from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
 import { Button } from "@mui/material";
+import StripeCheckout from "react-stripe-checkout";
+import { publishKey } from "contants";
+import { secretKey } from "contants";
+import { contentType } from "contants";
 
 function Notifications() {
   const [successSB, setSuccessSB] = useState(false);
   const [infoSB, setInfoSB] = useState(false);
   const [warningSB, setWarningSB] = useState(false);
   const [errorSB, setErrorSB] = useState(false);
-
+  const stripeRef = useRef(null);
   const openSuccessSB = () => setSuccessSB(true);
   const closeSuccessSB = () => setSuccessSB(false);
   const openInfoSB = () => setInfoSB(true);
@@ -215,6 +219,41 @@ function Notifications() {
     }
   };
 
+  const handleToken = async (token) => {
+    try {
+      const { id: tokenId } = token;
+      const { name: pharmacyName } = dat.pharmacy;
+      const amount = 50 * 1000;
+      const currency = "pkr";
+      const description = `Pay to ${pharmacyName}`;
+      const body = `amount=${amount}&currency=${currency}&description=${description}&source=${tokenId}`;
+      const headers = {
+        "Content-Type": contentType,
+        Authorization: `Bearer ${secretKey}`,
+      };
+      const method = "POST";
+
+      const response = await fetch(stripeUrl, {
+        method,
+        headers,
+        body,
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        console.log(data);
+        sendOrder();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const handleClosed = () => {
+    // handle checkout closed event
+  };
+
   return pharmacies.length > 0 && cart.length > 0 ? (
     <DashboardLayout>
       <Toaster position="top-center" reverseOrder={false} />
@@ -255,24 +294,29 @@ function Notifications() {
           <label style={{ top: -30, padding: 25 }}>Enter Phone</label>
         </div>
 
-        <div style={{ display: "flex", width: '84%' }}>
-          <input type={"checkbox"} onChange={handleCheck}/>
+        <div style={{ display: "flex", width: "84%" }}>
+          <input type={"checkbox"} onChange={handleCheck} />
           <a className="useexist">Use Existing Addess</a>
         </div>
-        <Button
-          disabled={
-            address === 0 ||
-            address === "" ||
-            phoneNumber === 0 ||
-            phoneNumber === ""
-          }
-          variant="contained"
-          color="success"
-          style={{ width: 441, marginTop: 40 }}
-          onClick={sendOrder}
-        >
-          CONFIRM PURCHASE
-        </Button>
+
+        {!(
+          address === 0 ||
+          address === "" ||
+          phoneNumber === 0 ||
+          phoneNumber === ""
+        ) && (
+          <StripeCheckout
+            ref={stripeRef}
+            stripeKey={publishKey}
+            name="Your business name"
+            description="Your product or service"
+            amount={1099} //amount in cents
+            currency="pkr"
+            email="arrowestates403@gmail.com"
+            token={handleToken}
+            closed={handleClosed}
+          />
+        )}
       </Modal>
       <DashboardNavbar />
       <MDBox mt={6} mb={3} style={{ display: "flex", flexWrap: "wrap" }}>

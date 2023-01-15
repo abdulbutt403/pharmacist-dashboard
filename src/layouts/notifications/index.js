@@ -23,6 +23,7 @@ import StripeCheckout from "react-stripe-checkout";
 import { publishKey } from "contants";
 import { secretKey } from "contants";
 import { contentType } from "contants";
+import { stripeUrl } from "contants";
 
 function Notifications() {
   const [successSB, setSuccessSB] = useState(false);

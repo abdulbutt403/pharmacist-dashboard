@@ -191,7 +191,7 @@ function Tables() {
                           title: "Video Call",
                           render: (rowData) => (
                             <>
-                              {(rowData.videoConferenceLink === "N/A" ? <span className="mt_dt"> Not Uploaded Yet </span>: <a className="linking"> Join Meeting <ChevronRight/> </a> )}
+                              {(rowData.videoConferenceLink === "N/A" ? <span className="mt_dt"> Not Uploaded Yet </span>: <a className="linking" href={rowData.videoConferenceLink} target={`_blank`}> Join Meeting <ChevronRight/> </a> )}
                             </>
                           ),
                         },
@@ -199,7 +199,7 @@ function Tables() {
                           title: "Tests/Prescription",
                           render: (rowData) => (
                             <>
-                              {(rowData.Prescripton === "N/A" ? <span className="mt_dt"> Not Suggested Yet </span>: <a className="linking"> Open Link <ChevronRight/> </a> )}
+                              {(rowData.Prescripton === "N/A" ? <span className="mt_dt"> Not Suggested Yet </span>: <a className="linking" href={rowData.Prescripton} target={`_blank`}> Open Link <ChevronRight/> </a> )}
                             </>
                           ),
                         },

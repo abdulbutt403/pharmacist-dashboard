@@ -76,7 +76,7 @@ function Pharmacies() {
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const [reason, setReason] = React.useState("");
-  const [tests, setTests] = React.useState([])
+  const [tests, setTests] = React.useState([]);
   const [row, setRow] = React.useState("");
   const [requestedDate, setDate] = React.useState("");
   const [requestedTime, setTime] = React.useState("");
@@ -86,8 +86,8 @@ function Pharmacies() {
   console.log({ store });
 
   function openModal(rowData) {
-    setTests(rowData.tests)
-    setReason(rowData.tests[0].title)
+    setTests(rowData.tests);
+    setReason(rowData.tests[0].title);
     setRow(rowData);
     setSelectedId(rowData._id);
     setSelectedName(rowData.fullName);
@@ -202,15 +202,19 @@ function Pharmacies() {
           style={{
             width: 441,
             marginTop: 30,
-            background: '#fff',
+            background: "#fff",
             height: 60,
             marginBottom: 12,
-            cursor: 'pointer'
+            cursor: "pointer",
           }}
           value={reason}
           onChange={(e) => setReason(e.target.value)}
         >
-          {tests.map((e,i) => (<MenuItem key={i} value={e.title}>{e.title}</MenuItem>))}
+          {tests.map((e, i) => (
+            <MenuItem key={i} value={e.title}>
+              {e.title}
+            </MenuItem>
+          ))}
         </Select>
         <Button
           disabled={reason.length === 0 || requestedDate === ""}
@@ -268,6 +272,25 @@ function Pharmacies() {
                               "dddd, MMMM Do YYYY",
                             )}
                           </span>
+                        ),
+                      },
+                      {
+                        title: "Chat Now",
+                        render: (rowData) => (
+                          <a
+                            href={`https://wa.me/${rowData.phoneNumber}`}
+                            target={"_blank"}
+                          >
+                            <i
+                              style={{
+                                color: "green",
+                                fontSize: 32,
+                                transform: "translate(10px, 5px)",
+                              }}
+                              class="fa fa-whatsapp"
+                              aria-hidden="true"
+                            ></i>
+                          </a>
                         ),
                       },
                       {

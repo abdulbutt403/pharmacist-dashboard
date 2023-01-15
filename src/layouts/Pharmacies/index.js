@@ -228,6 +228,25 @@ function Pharmacies() {
                         ),
                       },
                       {
+                        title: "Chat Now",
+                        render: (rowData) => (
+                          <a
+                            href={`https://wa.me/${rowData.phoneNumber}`}
+                            target={"_blank"}
+                          >
+                            <i
+                              style={{
+                                color: "green",
+                                fontSize: 32,
+                                transform: "translate(10px, 5px)",
+                              }}
+                              class="fa fa-whatsapp"
+                              aria-hidden="true"
+                            ></i>
+                          </a>
+                        ),
+                      },
+                      {
                         title: "Located At",
                         field: 'address',
                       },

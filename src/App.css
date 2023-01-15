@@ -153,6 +153,7 @@
   outline: none;
 }
 
+
 .input-group-2 input {
   position: absolute;
   border: 0;
@@ -667,4 +668,13 @@
   cursor: pointer;
   min-width: 200px;
 
+}
+
+.linking{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: #43a7fd;
+  text-decoration: underline !important;
+  cursor: pointer;
 }

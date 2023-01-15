@@ -14,6 +14,8 @@ import Verify from "layouts/authentication/verify-up";
 import Icon from "@mui/material/Icon";
 import Pharmacies from "layouts/Pharmacies";
 import Labs from "layouts/Labs";
+import Doctors from "layouts/Doctors";
+import Appointments from "layouts/appointments";
 import EditProfile from "layouts/EditProfile";
 import AddForm from "layouts/AddForm";
 
@@ -89,6 +91,24 @@ const routes = [
     icon: <Icon fontSize="small">receipt_long</Icon>,
     route: "/prescriptions",
     component: <AddForm />,
+  },
+  {
+    type: "collapse",
+    name: "Doctors",
+    key: "doctors",
+    margin: false,
+    icon: <Icon fontSize="small">receipt</Icon>,
+    route: "/doctors",
+    component: <Doctors />,
+  },
+  {
+    type: "collapse",
+    name: "Appointments",
+    key: "appointments",
+    margin: true,
+    icon: <Icon fontSize="small">receipt</Icon>,
+    route: "/appointments",
+    component: <Appointments />,
   },
   {
     type: "collapse",

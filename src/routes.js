@@ -304,7 +304,7 @@ const routes = [
     margin: false,
     key: "edit_profile-doctor",
     icon: <Icon fontSize="small">Edit</Icon>,
-    route: "/edit_profile",
+    route: "/edit_profile-doctor",
     component: <EditProfile4 />,
   },
 ];

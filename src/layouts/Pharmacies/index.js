@@ -365,7 +365,7 @@ function Pharmacies() {
                           icon: () => <SaveAlt />,
                           tooltip: "add to cart",
                           onClick: (event, rowData) => {
-                            rowData.Prescription ? window.location.href = '/prescriptions': openModal(rowData)
+                            rowData.Prescription ? window.location.href = '/prescriptions-patient': openModal(rowData)
                           },
                         },
                       ]}

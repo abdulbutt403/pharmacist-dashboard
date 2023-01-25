@@ -54,6 +54,7 @@ function Basic() {
 
         if (res.data.token) {
           dispatch(signIn());
+          localStorage.setItem('role',role)
           setTimeout(() => {
             localStorage.setItem("token", res.data.token);
             window.location.href = "/dashboard";
@@ -146,6 +147,9 @@ function Basic() {
                 onChange={(e) => setRole(e.target.value)}
               >
                 <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
+                <MenuItem value={"PHARMACIST"}>PHARMACY</MenuItem>
+                <MenuItem value={"LAB"}>LAB</MenuItem>
+                <MenuItem value={"DOCTOR"}>DOCTOR</MenuItem>  
               </Select>
               <MDBox mb={2}>
                 <MDInput

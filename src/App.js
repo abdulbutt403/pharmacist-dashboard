@@ -130,6 +130,23 @@ export default function App() {
       </Icon>
     </MDBox>
   );
+  let check = localStorage.getItem('role')
+  
+  const role = check ? check.toString().toLowerCase() : ''
+  let dashboardRoute = '/dashboard-patient'
+
+  if(role === 'patient'){
+    dashboardRoute = '/dashboard-patient'
+  }
+  if(role === 'pharmacist'){
+    dashboardRoute = '/dashboard-pharmacist'
+  }
+  if(role === 'lab'){
+    dashboardRoute = '/dashboard-lab'
+  }
+  if(role === 'doctor'){
+    dashboardRoute = '/dashboard-doctor'
+  }
 
   return (
 
@@ -140,7 +157,7 @@ export default function App() {
           <Sidenav
             color={sidenavColor}
             brand={(transparentSidenav && !darkMode) || whiteSidenav ? brandDark : brandWhite}
-            brandName="Patient Dashboard"
+            brandName="Dashboard"
             routes={routes}
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}
@@ -152,7 +169,7 @@ export default function App() {
       {layout === "vr" && <Configurator />}
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to={dashboardRoute} />} />
       </Routes>
     </ThemeProvider>
     

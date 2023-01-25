@@ -17,6 +17,8 @@ function Cover() {
   var [email, setEmail] = useState("admin@pharmacist.com");
   var [fullName, setfullName] = useState("admin@pharmacist.com");
   var [password, setPassword] = useState("");
+  var [phoneNumber, setPhoneNumber] = useState("");
+  var [address, setAddress] = useState("");
   var [role, setRole] = useState("PATIENT");
   const [checked, setChecked] = React.useState(true);
   const [terms, setTerms] = React.useState(false);
@@ -38,13 +40,15 @@ function Cover() {
       toast.error(`Please Enter a valid email..!`);
     } else if (!checked) {
       toast.error(`Please Agree to terms and conditions`);
-    } else if (!!login && !!password && !!role && checked) {
+    } else if (!!login && !!password && !!role && checked && phoneNumber && address) {
       try {
         const res = await axios.post(endPoint + "/users/create", {
           email: login,
           password: password,
           role: role,
           fullName: fullName,
+          phoneNumber: phoneNumber,
+          address: address
         });
         if (res.data.success) {
           toast.success("A verification code is sent to your email");
@@ -100,6 +104,9 @@ function Cover() {
                 onChange={(e) => setRole(e.target.value)}
               >
                 <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
+                <MenuItem value={"PHARMACIST"}>PHARMACY</MenuItem>
+                <MenuItem value={"LAB"}>LAB</MenuItem>
+                <MenuItem value={"DOCTOR"}>DOCTOR</MenuItem>  
               </Select>
               <MDBox mb={2}>
                 <MDInput
@@ -129,6 +136,26 @@ function Cover() {
                   fullWidth
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </MDBox>
+              <MDBox mb={2}>
+                <MDInput
+                  type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  label="Address"
+                  variant="standard"
+                  fullWidth
+                />
+              </MDBox>
+              <MDBox mb={2}>
+                <MDInput
+                  type="text"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  label="Phone (with country code e.g +92)"
+                  variant="standard"
+                  fullWidth
                 />
               </MDBox>
               <MDBox display="flex" alignItems="center" ml={-1}>

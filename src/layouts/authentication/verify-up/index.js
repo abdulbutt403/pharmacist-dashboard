@@ -97,6 +97,9 @@ function Cover() {
                 onChange={(e) => setRole(e.target.value)}
               >
                 <MenuItem value={"PATIENT"}>PATIENT</MenuItem>
+                <MenuItem value={"PHARMACIST"}>PHARMACY</MenuItem>
+                <MenuItem value={"LAB"}>LAB</MenuItem>
+                <MenuItem value={"DOCTOR"}>DOCTOR</MenuItem>  
               </Select>
             <MDBox mb={2}>
                 <MDInput

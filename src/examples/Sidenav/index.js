@@ -71,8 +71,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }, [dispatch, location]);
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
+  let check = localStorage.getItem('role')
+  const role = check ? check.toString().toLowerCase() : ''
   const renderRoutes = routes
     .filter((e) => !(e.key === "sign-up" || e.key === "sign-in" || e.key === 'verify-up'))
+    .filter((e) => e.route.includes(`-${role}`))
     .map(({ type, name, icon, title, noCollapse, key, href, route, margin }) => {
       let returnValue;
 
@@ -187,6 +190,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           style={sideLink}
           onClick={() => {
             localStorage.removeItem("token");
+            localStorage.clear();
             window.location.href = "/authentication/sign-in";
           }}
         >
